@@ -121,40 +121,8 @@ include_once("header.php");
             }
         });
     });
-
-    $(document).ready(function () {
-        $("like").click(function () {
-
-            $.ajax({
-                type: 'POST',
-                url: 'like.php',
-                data: {
-
-                }
-                success: function (data) {
-                    alert(data);
-                    $("p").text(data);
-
-                }
-            });
-        });
-    });
 </script>
-<!--<div class="container-fluid">-->
-<!--    <div class="row">-->
-<!--        <section id="pinBoot">-->
-<!---->
-<!--            <article class="white-panel"><img src="test.jpg" alt="">-->
-<!--                <h4><a href="#">Title</a><i style="color: #337ab7" class="fa fa-thumbs-up pull-right"></i></h4>-->
-<!--                <p>Description</p>-->
-<!--            </article>-->
-<!---->
-<!---->
-<!--        </section>-->
-<!---->
-<!---->
-<!--        <hr>-->
-<div id="wrapper">
+<!--<div id="wrapper">-->
     <div id="columns">
         <ul class="news_list">
             <?php
@@ -167,8 +135,8 @@ include_once("header.php");
                 $image = $data['original_image'];
                 //echo "<li><h3>$title</h3><p>$content<p></li>";
                 echo "<div class='pin'>
-                      <img src='images/" . $image . "' />
-                        <h4><a href='view.php?=" . $id . "'>" . $title . "</a><i style=\"color: #337ab7\" class=\"fa fa-thumbs-up pull-right\"></i></h4>
+                       <a href='view.php?". $id ."'> <img src='images/" . $image . "'  /></a>
+                        <h4><a href='view.php?" . $id . "'>" . $title . "</a><i style=\"color: #337ab7\" class=\"fa fa-thumbs-up pull-right\"></i></h4>
                         <p>" . $content . "</p>
                       </div>";
             }
@@ -182,7 +150,7 @@ include_once("header.php");
             <button class="loadmore" data-page="2">Load More</button>
         </li>
     </ul>
-</div>
+<!--</div>-->
 
 </body>
 </html>
