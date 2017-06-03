@@ -1,4 +1,6 @@
 <?php
+ini_set('post_max_size', '64M');
+ini_set('upload_max_filesize', '64M');
 include_once('header.php');
 $data = array();
 if (isset($_POST['image_upload']) && !empty($_FILES['images'])) : {
@@ -20,7 +22,7 @@ if (isset($_POST['image_upload']) && !empty($_FILES['images'])) : {
     $image_size = $image["size"] / 1024;
     $image_flag = true;
 //max image size
-    $max_size = 512;
+    $max_size = 10240;
     if (in_array($ext, $allowedExts) && $image_size < $max_size) {
         $image_flag = true;
     } else {
