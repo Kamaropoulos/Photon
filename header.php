@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once(__DIR__ . "/connection.php");
+include_once("connection.php");
 ?>
 <html>
 <head>
@@ -25,8 +25,8 @@ include_once(__DIR__ . "/connection.php");
                           <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">". $_SESSION['username'] . "
                           <span class=\"caret\"></span></a>
                               <ul class=\"dropdown-menu\">
-                                <li><a href=\"#\">Profile</a></li>
-                                <li><a href=\"#\">Your Content</a></li>
+                                <li><a href='profile.php'>Profile</a></li>
+                                <li><a href='settings.php'>Settings</a></li>
                                 <li><a href='logout.php'>Log Out</a></li>
                               </ul>
                           </li>";
