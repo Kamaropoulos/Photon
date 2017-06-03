@@ -20,8 +20,8 @@ if (isset($_POST['page'])):
             $image = $data['original_image'];
             //echo "<li><h3>$title</h3><p>$content<p></li>";
             echo "<div class='pin'>
-                      <img src='images/" . $image . "' />
-                        <h4><a href='view.php?=". $id ."'>". $title ."</a><i type='like' style=\"color: #337ab7\" class=\"fa fa-thumbs-up pull-right\"></i></h4>
+                       <a href='view.php?". $id ."'> <img src='images/" . $image . "'  /></a>
+                        <h4><a href='view.php?" . $id . "'>" . $title . "</a><i style=\"color: #337ab7\" class=\"fa fa-thumbs-up pull-right\"></i></h4>
                         <p>" . $content . "</p>
                       </div>";
 
