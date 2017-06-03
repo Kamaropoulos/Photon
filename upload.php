@@ -56,7 +56,7 @@ if (isset($_POST['image_upload']) && !empty($_FILES['images'])) : {
     }
     mysqli_close($conn);
     //echo json_encode($data);
-    header('Location:view.php?id='. $last_id);
+    header('Location:view.php?'. $last_id);
 
 } else: ?>
     <script src="assets/js/jquery.min.js"></script>
