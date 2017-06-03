@@ -20,7 +20,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
     exit();
 }
 
-$sql = "SELECT * FROM images WHERE pid=" . $id;
+//$sql = "SELECT * FROM images WHERE pid=" . $id;
+$sql = "SELECT images.*, users.username
+FROM images
+JOIN users ON users.uid = images.uid
+WHERE images.pid = ". $id;
 $result = $conn->query($sql);
 if ($row = mysqli_fetch_assoc($result)) {
     include_once("header.php");
@@ -53,7 +57,7 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <div class="col-md-3">
                 <?php
-                echo "<h1 style=\"color: #337ab7\">" . $row['title'] . "</h1><br>";
+                echo "<h2 style=\"color: #337ab7\">" . $row['title'] . "</h2>"; echo "<h4>by <a href='profile.php?". $row['uid']."'>". $row['username'] ."</a></h4><br>";
                 echo "<p>" . $row['description'] . "</p><br>";
                 ?>
             </div>
