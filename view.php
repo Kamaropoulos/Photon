@@ -51,7 +51,6 @@ if ($row = mysqli_fetch_assoc($result)) {
 
         .img_div {
             display: inline-block;
-            height: 100vh;
             width: 100%;
             text-align: center;
         }
@@ -79,6 +78,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                 <div class="img_div">
                     <img src="images/<?php echo $row['original_image']; ?>" class="img-thumbnail">
                 </div>
+                test
             </div>
             <div class="col-md-3">
                 <?php
