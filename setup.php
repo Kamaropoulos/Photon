@@ -12,7 +12,8 @@ $sql_users = "CREATE TABLE `users` (
 uid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
 username VARCHAR(30) NOT NULL,
 pass_hash CHAR(128) NOT NULL,
-reg_date TIMESTAMP
+reg_date TIMESTAMP,
+followers integer(8) default 0
 );";
 
 $sql_photos = "CREATE TABLE `images` (
@@ -21,8 +22,8 @@ uid INT UNSIGNED,
 title varchar(50) NOT NULL,
 description text,
 original_image text,
-page_views int(7),
-likes int(7),
+page_views int(7) default 0,
+likes int(7) default 0,
 foreign key (uid) references users(uid)
 );";
 
