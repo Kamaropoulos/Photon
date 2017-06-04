@@ -126,6 +126,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     <label for=\"description\">Description</label>
                                                           <textarea class=\"form-control\" rows='5' name='description' id='description'>". $row['description'] ."</textarea>
                                                   </div>
+                                                  <input type='hidden' name='pid' value='". $row['pid'] ."'>
                                                 
                                                 
                                                 
