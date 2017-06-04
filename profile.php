@@ -2,6 +2,15 @@
 session_start();
 include_once("connection.php");
 
+function limit_text($text, $limit) {
+    if (str_word_count($text, 0) > $limit) {
+        $words = str_word_count($text, 2);
+        $pos = array_keys($words);
+        $text = substr($text, 0, $pos[$limit]) . '...';
+    }
+    return $text;
+}
+
 if (isset($_SERVER['QUERY_STRING'])) {
     $id = (int)mysqli_real_escape_string($conn, $_SERVER['QUERY_STRING']);
     if ($id == 0) {
@@ -96,11 +105,8 @@ include_once('header.php');
                     </div>
                     <div class="span4">
                         <h2><?php echo $row['username']; ?></h2>
-<!--                        <ul class="unstyled">-->
-<!--                            <li><i class="icon-phone"></i> 916-241-3613</li>-->
-<!--                            <li><i class="icon-envelope"></i> jonniespratley@me.com</li>-->
-<!--                            <li><i class="icon-globe"></i> http://jonniespratley.me</li>-->
-<!--                        </ul>-->
+                        <a class="btn btn-info" href="#">
+                            <i class="fa fa-plus fa-lg"></i> Follow</a>
                     </div>
                     <div class="span6">
                         <ul class="inline stats">
@@ -109,11 +115,11 @@ include_once('header.php');
                                 Followers
                             </li>
                             <li>
-                                <span><?php echo $row['sum_likes']; ?></span>
+                                <span><?php if (is_null($row['sum_likes'])) echo 0; else echo $row['sum_likes']; ?></span>
                                 Likes
                             </li>
                             <li>
-                                <span><?php echo $row['sum_views']; ?></span>
+                                <span><?php if (is_null($row['sum_views'])) echo 0; else echo $row['sum_views']; ?></span>
                                 Views
                             </li>
                         </ul>
@@ -125,10 +131,32 @@ include_once('header.php');
             </div>
 
             <div class="well clearfix">
+                <div id="columns">
+                    <ul class="news_list">
+                        <?php
+                        $resultsPerPage = 10;
+                        $query = mysqli_query($conn, "SELECT * FROM `images` WHERE uid = $id ORDER BY `images`.`pid` DESC LIMIT 0 , $resultsPerPage");
+                        while ($data = mysqli_fetch_array($query)) {
+                            $id = $data['pid'];
+                            $title = $data['title'];
+                            $content = $data['description'];
+                            $image = $data['original_image'];
+                            //echo "<li><h3>$title</h3><p>$content<p></li>";
+                            echo "<div class='pin'>
+                       <a href='view.php?". $id ."'> <img src='images/" . $image . "'  /></a>
+                        <h4><a href='view.php?" . $id . "'>" . $title . "</a><i style=\"color: #337ab7\" class=\"fa fa-thumbs-up pull-right\"></i></h4>
+                        <p>" . limit_text($content, 20) . "</p>
+                      </div>";
+                        }
+                        ?>
+                    </ul>
 
 
-                <img class="pull-right"
-                     src="http://kcdn3.klout.com/static/images/developers/dev-assets/powered-by-klout.png"
-                     width="150px"/>
+                </div>
+                <ul>
+                    <li class="loadbutton">
+                        <button class="loadmore" data-page="2">Load More</button>
+                    </li>
+                </ul>
             </div>
         </div>
