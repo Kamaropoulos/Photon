@@ -48,12 +48,15 @@
                             <div class="panel-body">
                                 <form action="login.php" method="post" accept-charset="UTF-8" role="form">
                                     <fieldset>
-                                        <div class="form-group">
-                                            <input class="form-control" placeholder="E-mail" name="username" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <input class="form-control" placeholder="Password" name="password" type="password" value="">
-                                        </div>
+
+                                        <div class="input-group margin-bottom-sm">
+                                            <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                            <input class="form-control" name="username" type="text" placeholder="Email address" required="true">
+                                        </div><br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                            <input class="form-control" name="password" type="password" placeholder="Password" required="true">
+                                        </div><br>
                                         <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
                                     </fieldset>
                                 </form>
