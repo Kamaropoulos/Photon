@@ -1,6 +1,6 @@
 <?php
 include_once("connection.php");
-
+session_start();
 if (isset($_SERVER['QUERY_STRING'])) {
     $id = (int)mysqli_real_escape_string($conn, $_SERVER['QUERY_STRING']);
     if ($id == 0) {
