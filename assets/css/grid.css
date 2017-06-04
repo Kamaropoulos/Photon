@@ -1,40 +1,98 @@
-
-
-body {
-    background-color:#eee;
+#container {
+    width: 80%;
+    margin: auto auto;
 }
 
-#pinBoot {
-    position: relative;
-    max-width: 100%;
+.news_list {
+    list-style: none;
+}
+
+.loadmore {
+    color: #FFF;
+    border-radius: 5px;
+    width: 50%;
+    height: 50px;
+    font-size: 20px;
+    background: #42B8DD;
+    outline: 0;
+}
+
+.loadbutton {
+    text-align: center;
+}
+
+#wrapper {
+    width: 90%;
+    max-width: 1100px;
+    min-width: 800px;
+    margin: 50px auto;
+}
+
+#columns {
+    -webkit-column-count: 3;
+    -webkit-column-gap: 10px;
+    -webkit-column-fill: auto;
+    -moz-column-count: 3;
+    -moz-column-gap: 10px;
+    -moz-column-fill: auto;
+    column-count: 3;
+    column-gap: 15px;
+    column-fill: auto;
+}
+
+.pin {
+    display: inline-block;
+    background: #FEFEFE;
+    border: 2px solid #FAFAFA;
+    box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
+    margin: 0 2px 15px;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    padding: 15px;
+    padding-bottom: 5px;
+    background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
+    opacity: 1;
+
+    -webkit-transition: all .2s ease;
+    -moz-transition: all .2s ease;
+    -o-transition: all .2s ease;
+    transition: all .2s ease;
+}
+
+.pin img {
     width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
 }
-img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-}
-.white-panel {
-    position: absolute;
-    background: white;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-}
-/*
-stylize any heading tags withing white-panel below
-*/
 
-.white-panel h1 {
-    font-size: 1em;
+.pin p {
+    font: 12px/18px Arial, sans-serif;
+    color: #333;
+    margin: 0;
 }
-.white-panel h1 a {
-    color: #A92733;
+
+@media (min-width: 960px) {
+    #columns {
+        -webkit-column-count: 4;
+        -moz-column-count: 4;
+        column-count: 4;
+    }
 }
-.white-panel:hover {
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
-    margin-top: -5px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+
+@media (min-width: 1100px) {
+    #columns {
+        -webkit-column-count: 5;
+        -moz-column-count: 5;
+        column-count: 5;
+    }
+}
+
+#columns:hover .pin:not(:hover) {
+    opacity: 0.4;
+}
+
+ul {
+    list-style-type: none;
 }
