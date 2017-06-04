@@ -24,7 +24,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 $sql = "SELECT images.*, users.username
 FROM images
 JOIN users ON users.uid = images.uid
-WHERE images.pid = ". $id;
+WHERE images.pid = " . $id;
 $result = $conn->query($sql);
 if ($row = mysqli_fetch_assoc($result)) {
     include_once("header.php");
@@ -37,9 +37,9 @@ if ($row = mysqli_fetch_assoc($result)) {
         /*}*/
 
         .modal-header-danger {
-            color:#fff;
-            padding:9px 15px;
-            border-bottom:1px solid #eee;
+            color: #fff;
+            padding: 9px 15px;
+            border-bottom: 1px solid #eee;
             background-color: #d9534f;
             -webkit-border-top-left-radius: 5px;
             -webkit-border-top-right-radius: 5px;
@@ -60,6 +60,18 @@ if ($row = mysqli_fetch_assoc($result)) {
             height: 80%;
             vertical-align: top;
         }
+
+        .modal-body .form-horizontal .col-sm-2,
+        .modal-body .form-horizontal .col-sm-10 {
+            width: 100%
+        }
+
+        .modal-body .form-horizontal .control-label {
+            text-align: left;
+        }
+        .modal-body .form-horizontal .col-sm-offset-2 {
+            margin-left: 15px;
+        }
     </style>
     <div class="container-fluid">
         <div class="row">
@@ -71,11 +83,71 @@ if ($row = mysqli_fetch_assoc($result)) {
             <div class="col-md-3">
                 <?php
                 echo "<h2 style=\"color: #337ab7\">" . $row['title'] . "</h2>";
-                if (isset($_SESSION['userid'])){
-                    if ($row['uid'] == $_SESSION['userid']){
+                echo "<h4>by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br>";
+                echo "<p>" . $row['description'] . "</p><br>";
+                if (isset($_SESSION['userid'])) {
+                    if ($row['uid'] == $_SESSION['userid']) {
                         //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"fa fa-trash pull-right\" aria-hidden=\"true\"></i> Delete</a>";
-                        echo "<a class=\"btn btn-danger pull-right\" data-toggle=\"modal\" data-target=\"#DeleteModal\" href=\"#\">
-                              <i class=\"fa fa-trash-o fa-lg\"></i> Delete</a><div id=\"DeleteModal\" class=\"modal fade\" role=\"dialog\">
+                        echo "<div class=\"btn-toolbar\">
+                              
+                              <a class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModalNorm\" href=\"#\">
+                              <i class=\"fa fa-edit fa-lg\" ></i > Edit</a >
+                              <a class=\"btn btn-danger\" data-toggle=\"modal\" data-target=\"#DeleteModal\" href=\"#\">
+                              <i class=\"fa fa-trash-o fa-lg\"></i > Delete</a >
+                              </div>
+                              
+                              <!-- Modal -->
+                                <div class=\"modal fade\" id=\"myModalNorm\" tabindex=\"-1\" role=\"dialog\" 
+                                     aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">
+                                    <div class=\"modal-dialog\">
+                                        <div class=\"modal-content\">
+                                            <!-- Modal Header -->
+                                            <div class=\"modal-header\">
+                                                <button type=\"button\" class=\"close\" 
+                                                   data-dismiss=\"modal\">
+                                                       <span aria-hidden=\"true\">&times;</span>
+                                                       <span class=\"sr-only\">Close</span>
+                                                </button>
+                                                <h4 class=\"modal-title\" id=\"myModalLabel\">
+                                                    Modal title
+                                                </h4>
+                                            </div>
+                                            
+                                            <!-- Modal Body -->
+                                            <div class=\"modal-body\">
+                                                
+                                                <form action='update.php' method='post' role=\"form\">
+                                                  <div class=\"form-group\">
+                                                    <label for=\"Title\">Title</label>
+                                                      <input type=\"text\" class=\"form-control\"
+                                                      id=\"Title\" name='title' value='". $row['title'] ."'/>
+                                                  </div>
+                                                  <div class=\"form-group\">
+                                                    <label for=\"description\">Description</label>
+                                                          <textarea class=\"form-control\" rows='5' name='description' id='description'>". $row['description'] ."</textarea>
+                                                  </div>
+                                                
+                                                
+                                                
+                                            </div>
+                                            
+                                            <!-- Modal Footer -->
+                                            <div class=\"modal-footer\">
+                                                <button type=\"button\" class=\"btn btn-default\"
+                                                        data-dismiss=\"modal\">
+                                                            Close
+                                                </button>
+                                                <button type=\"button sumbit\" class=\"btn btn-primary\">
+                                                    Save changes
+                                                </button>
+                                            </div></form>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                              
+                              <div id=\"DeleteModal\" class=\"modal fade\" role=\"dialog\">
+                              
                     <div class=\"modal-dialog\">
 
                         <!-- Modal content-->
@@ -89,7 +161,7 @@ if ($row = mysqli_fetch_assoc($result)) {
                             </div>
                             <div class=\"modal-footer\">
                                 <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>
-                                <button type=\"button\" class=\"btn btn-danger\" onclick=\"location.href = 'delete.php?". $row['pid'] ."'\">Delete Image</button>
+                                <button type=\"button\" class=\"btn btn-danger\" onclick=\"location.href = 'delete.php?" . $row['pid'] . "'\">Delete Image</button>
                             </div>
                         </div>
 
@@ -98,8 +170,6 @@ if ($row = mysqli_fetch_assoc($result)) {
                         //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"icon-trash icon-large\"></i> Delete</a>";
                     }
                 }
-                echo "<h4>by <a href='profile.php?". $row['uid']."'>". $row['username'] ."</a></h4><br>";
-                echo "<p>" . $row['description'] . "</p><br>";
                 ?>
             </div>
         </div>
