@@ -39,6 +39,7 @@ cid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 pid INT UNSIGNED NOT NULL,
 uid INT UNSIGNED NOT NULL,
 comment text NOT NULL,
+post_time TIMESTAMP,
 foreign key (uid) references users(uid),
 foreign key (pid) references images(pid)
 );";
