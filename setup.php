@@ -19,7 +19,7 @@ followers integer(8) default 0
 
 $sql_follows = "CREATE TABLE `follows` (
 fid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-uid_follower INT UNSIGNED NOT NULL,
+follower_uid INT UNSIGNED NOT NULL,
 followed_uid INT UNSIGNED NOT NULL
 );";
 
