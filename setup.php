@@ -1,10 +1,10 @@
 <?php
 
-mysqli_connect('localhost','root','');
-mysqli_query("CREATE USER 'photon'@'localhost' IDENTIFIED BY '';");
-mysqli_query("GRANT ALL ON photon.* TO 'photon'@'localhost'");
-mysqli_query("CREATE DATABASE photon");
-mysqli_close();
+mysql_connect('localhost','root','');
+mysql_query("CREATE USER 'photon'@'localhost' IDENTIFIED BY '';");
+mysql_query("GRANT ALL ON photon.* TO 'photon'@'localhost'");
+mysql_query("CREATE DATABASE photon");
+mysql_close();
 
 include("connection.php");
 
@@ -42,10 +42,10 @@ foreign key (uid) references users(uid),
 foreign key (pid) references images(pid)
 );";
 
-mysqli_query('DROP TABLE IF EXISTS `photon`.`users`') or die(mysqli_error());
-mysqli_query('DROP TABLE IF EXISTS `photon`.`follows`') or die(mysqli_error());
-mysqli_query('DROP TABLE IF EXISTS `photon`.`images`') or die(mysqli_error());
-mysqli_query('DROP TABLE IF EXISTS `photon`.`comments`') or die(mysqli_error());
+mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`users`') or die(mysqli_error($conn));
+mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`follows`') or die(mysqli_error($conn));
+mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`images`') or die(mysqli_error($conn));
+mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`comments`') or die(mysqli_error($conn));
 
 if ($conn->query($sql_users) === TRUE) {
     echo "Table Users created successfully\n";
