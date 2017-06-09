@@ -37,10 +37,55 @@ if(!isset($row['uid'])){
     exit();
 }
 
+$sql_follows = "SELECT count(fid) as follows FROM follows WHERE followed_uid = " . $id;
+$follows_result = $conn->query($sql_follows);
+$follows_row = mysqli_fetch_assoc($follows_result);
+$follows = $follows_row['follows'];
+
+if (isset($_SESSION['userid'])){
+    $sql_is_following = "SELECT fid FROM follows WHERE uid_follower = " . $_SESSION['userid'] . " AND followed_uid = " . $id . ";";
+    $result_is_following = $conn->query($sql_is_following);
+    if (!$result_is_following || mysqli_num_rows($result_is_following) < 0){
+        $isFollowing = 0;
+    } else $isFollowing = 1;
+} else $isFollowing = 0;
+
 include_once('header.php');
 
 
 ?>
+
+<script>
+    $(document).ready(function(){
+        document.getElementById("follow-btn").onclick = function(){follow()};
+        document.getElementById("unfollow-btn").onclick = function(){unfollow()};
+        function follow(){
+            var request = $.ajax({
+                type: "POST",
+                url: "follow.php",
+                data: {id: <?= $id ?>},
+                dataType: "html"
+            });
+
+            request.done(function(result){
+                $("#follows").html(result);
+            });
+        }
+        function unfollow(){
+            var request = $.ajax({
+                type: "POST",
+                url: "unfollow.php",
+                data: {id: <?= $id ?>},
+                dataType: "html"
+            });
+
+            request.done(function(result){
+                $("#follows").html(result);
+            });
+        }
+    });
+
+</script>
 
 <style>
     .stats {
@@ -105,13 +150,19 @@ include_once('header.php');
                     </div>
                     <div class="span4">
                         <h2><?php echo $row['username']; ?></h2>
-                        <a class="btn btn-info" href="#">
-                            <i class="fa fa-plus fa-lg"></i> Follow</a>
+
+                    <?php if (($_SESSION['userid'] != $row['uid']) && ($isFollowing == 0)): ?>
+<!--                        <a class="btn btn-info">-->
+<!--                            <i id="follow-btn" class="fa fa-plus fa-lg"></i> Follow</a>-->
+                        <button id="follow-btn" type="button" class="btn btn-info"><i class="fa fa-plus"></i> Follow</button>
+                    <?php elseif ($isFollowing == 1): ?>
+                        <button id="unfollow-btn" type="button" class="btn btn-danger"><i class="fa fa-minus"></i> Unfollow</button>
+                    <?php endif ?>
                     </div>
                     <div class="span6">
                         <ul class="inline stats">
                             <li>
-                                <span><?php echo $row['followers']; ?></span>
+                                <span id="follows"><?= $follows ?></span>
                                 Followers
                             </li>
                             <li>
