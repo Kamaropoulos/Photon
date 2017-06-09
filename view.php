@@ -29,6 +29,27 @@ $result = $conn->query($sql);
 if ($row = mysqli_fetch_assoc($result)) {
     include_once("header.php");
     ?>
+    <script>
+        function post(){
+            var comm = document.getElementById("comment").value;
+
+            if(comment){
+                $.ajax({
+                    type: 'post',
+                    url: 'comment.php',
+                    data: {
+                        image_id: <?=$id?>,
+                        comment: comm
+                    },
+                    success: function (response){
+                        document.getElementById("comments").innerHTML=response+document.getElementById("comments").innerHTML;
+                        document.getElementById("comment").value="";
+                    }
+                });
+            }
+            return false;
+        }
+    </script>
     <!-- Page Content -->
     <style>
         /*body, html {*/
@@ -71,18 +92,57 @@ if ($row = mysqli_fetch_assoc($result)) {
         .modal-body .form-horizontal .col-sm-offset-2 {
             margin-left: 15px;
         }
+
+        textarea{
+            width:100%;
+            height:100px;
+        }
     </style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <div class="img_div">
                     <img src="images/<?php echo $row['original_image']; ?>" class="img-thumbnail">
+
+                </div>
+                <div>
+                    <h2>&nbsp;Comments</h2>
+                    <form method="post" action="" onsubmit="return post();">
+
+                        <textarea id="comment" placeholder="Write your comment here..."></textarea><br>
+                        <input type="submit" value="Post">
+
+                    </form>
+                    <div id="comments">
+                        <?php
+                            $comm_sql = "SELECT comments.*, users.username
+                                    FROM comments
+                                    JOIN users on users.uid = comments.uid
+                                    WHERE comments.pid = ". $id .";";
+                            $comments = $conn->query($comm_sql);
+                            while($row_comm = mysqli_fetch_array($comments)){
+                                $username = $row_comm['username'];
+                                $comment = $row_comm['comment'];
+                                $timestamp_raw = new DateTime($row_comm['post_time']);
+                                $timestamp = $timestamp_raw->format('F j, Y g:ia');
+
+                                $uid = $row_comm['uid']; ?>
+
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">Posted by <a href="profile.php?<?=$uid?>"><?=$username?></a> at <?=$timestamp?></div>
+                                    <div class="panel-body"><?=$comment?></p></div>
+                                </div>
+
+                                <?php
+                            }
+                        ?>
+                    </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <?php
                 echo "<h2 style=\"color: #337ab7\">" . $row['title'] . "</h2>";
-                echo "<h4>by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br>";
+                echo "<h4> by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br>";
                 echo "<p>" . $row['description'] . "</p><br>";
                 if (isset($_SESSION['userid'])) {
                     if ($row['uid'] == $_SESSION['userid']) {
