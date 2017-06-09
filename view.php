@@ -27,6 +27,13 @@ JOIN users ON users.uid = images.uid
 WHERE images.pid = " . $id;
 $result = $conn->query($sql);
 if ($row = mysqli_fetch_assoc($result)) {
+
+        $sql_view = "UPDATE images
+                 SET page_views = page_views + 1
+                 WHERE pid = ". $id;
+        $conn->query($sql_view);
+
+
     include_once("header.php");
     ?>
     <script>
