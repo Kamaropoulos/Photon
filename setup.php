@@ -42,6 +42,11 @@ foreign key (uid) references users(uid),
 foreign key (pid) references images(pid)
 );";
 
+mysqli_query('DROP TABLE IF EXISTS `photon`.`users`') or die(mysqli_error());
+mysqli_query('DROP TABLE IF EXISTS `photon`.`follows`') or die(mysqli_error());
+mysqli_query('DROP TABLE IF EXISTS `photon`.`images`') or die(mysqli_error());
+mysqli_query('DROP TABLE IF EXISTS `photon`.`comments`') or die(mysqli_error());
+
 if ($conn->query($sql_users) === TRUE) {
     echo "Table Users created successfully\n";
 } else {
