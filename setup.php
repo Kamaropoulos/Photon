@@ -1,9 +1,10 @@
 <?php
 
 mysql_connect('localhost','root','');
-mysql_query("CREATE USER 'photon'@'localhost' IDENTIFIED BY '';");
+mysql_query("CREATE USER 'photon'@'localhost' IDENTIFIED BY '1234';");
 mysql_query("GRANT ALL ON photon.* TO 'photon'@'localhost'");
 mysql_query("CREATE DATABASE photon");
+mysql_query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 mysql_close();
 
 include("connection.php");
@@ -48,27 +49,27 @@ mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`images`') or die(mysqli_erro
 mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`comments`') or die(mysqli_error($conn));
 
 if ($conn->query($sql_users) === TRUE) {
-    echo "Table Users created successfully\n";
+    echo "Table users created successfully<br>";
 } else {
-    echo "Error creating table: " . $conn->error;
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
 if ($conn->query($sql_follows) === TRUE) {
-    echo "Table Photos created successfully\n";
+    echo "Table follows created successfully<br>";
 } else {
-    echo "Error creating table: " . $conn->error;
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
 if ($conn->query($sql_images) === TRUE) {
-    echo "Table Users created successfully\n";
+    echo "Table Users created successfully<br>";
 } else {
-    echo "Error creating table: " . $conn->error;
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
 if ($conn->query($sql_comments) === TRUE) {
-    echo "Table Photos created successfully\n";
+    echo "Table Photos created successfully<br>";
 } else {
-    echo "Error creating table: " . $conn->error;
+    echo "Error creating table: " . $conn->error . "<br>";
 }
 
 $conn->close();
