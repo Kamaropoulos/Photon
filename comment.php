@@ -4,7 +4,7 @@
 
     if (isset($_SESSION['userid']) && isset($_POST['image_id']) && isset($_POST['comment'])){
         $pid = (int)mysqli_real_escape_string($conn, $_POST['image_id']);
-        $comment = mysqli_real_escape_string($conn, $_POST['comment']);
+        $comment = htmlentities(mysqli_real_escape_string($conn, $_POST['comment']));
 
         $sql_insert = "INSERT INTO comments values(NULL, ". $pid .", ". $_SESSION['userid'] .", '". $comment ."', NOW());";
         if ($conn->query($sql_insert) === TRUE){

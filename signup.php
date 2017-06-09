@@ -3,8 +3,8 @@
 if ($_POST): {
 
     include_once('connection.php');
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $username = htmlentities(mysqli_real_escape_string($conn, $_POST['username']));
+    $password = htmlentities(mysqli_real_escape_string($conn, $_POST['password']));
     $hashed_pass = hash('sha512', $password);
 
     echo $username;

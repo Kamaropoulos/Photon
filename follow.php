@@ -4,7 +4,7 @@
 
     if($_POST && isset($_SESSION['userid'])){
         $follower_uid = $_SESSION['userid'];
-        $follow_uid = mysqli_real_escape_string($conn, $_POST['id']);
+        $follow_uid = (int)mysqli_real_escape_string($conn, $_POST['id']);
 
         if ($follower_uid == $follow_uid){
             $sql_follows = "SELECT count(fid) as follows FROM follows WHERE followed_uid = " . $follow_uid;

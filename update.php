@@ -2,9 +2,9 @@
 session_start();
 include_once("connection.php");
 if ($_POST){
-    $id = mysqli_real_escape_string($conn, $_POST['pid']);
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $id = (int)mysqli_real_escape_string($conn, $_POST['pid']);
+    $title = htmlentities(mysqli_real_escape_string($conn, $_POST['title']));
+    $description = htmlentities(mysqli_real_escape_string($conn, $_POST['description']));
 
     $sql = "SELECT images.*, users.username
             FROM images
