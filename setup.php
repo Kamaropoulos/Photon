@@ -1,10 +1,10 @@
 <?php
 
-mysql_connect('localhost','root','');
-mysql_query("CREATE USER 'photon'@'localhost' IDENTIFIED BY '';");
-mysql_query("GRANT ALL ON photon.* TO 'photon'@'localhost'");
-mysql_query("CREATE DATABASE photon");
-mysql_close();
+mysqli_connect('localhost','root','');
+mysqli_query("CREATE USER 'photon'@'localhost' IDENTIFIED BY '';");
+mysqli_query("GRANT ALL ON photon.* TO 'photon'@'localhost'");
+mysqli_query("CREATE DATABASE photon");
+mysqli_close();
 
 include("connection.php");
 
@@ -16,7 +16,13 @@ reg_date TIMESTAMP,
 followers integer(8) default 0
 );";
 
-$sql_photos = "CREATE TABLE `images` (
+$sql_follows = "CREATE TABLE `follows` (
+fid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+uid_follower INT UNSIGNED NOT NULL,
+followed_uid INT UNSIGNED NOT NULL
+);";
+
+$sql_images = "CREATE TABLE `images` (
 pid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 uid INT UNSIGNED,
 title varchar(50) NOT NULL,
@@ -27,13 +33,34 @@ likes int(7) default 0,
 foreign key (uid) references users(uid)
 );";
 
+$sql_comments = "CREATE TABLE `comments` (
+cid INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+pid INT UNSIGNED NOT NULL,
+uid INT UNSIGNED NOT NULL,
+comment text NOT NULL,
+foreign key (uid) references users(uid),
+foreign key (pid) references images(pid)
+);";
+
 if ($conn->query($sql_users) === TRUE) {
     echo "Table Users created successfully\n";
 } else {
     echo "Error creating table: " . $conn->error;
 }
 
-if ($conn->query($sql_photos) === TRUE) {
+if ($conn->query($sql_follows) === TRUE) {
+    echo "Table Photos created successfully\n";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
+if ($conn->query($sql_images) === TRUE) {
+    echo "Table Users created successfully\n";
+} else {
+    echo "Error creating table: " . $conn->error;
+}
+
+if ($conn->query($sql_comments) === TRUE) {
     echo "Table Photos created successfully\n";
 } else {
     echo "Error creating table: " . $conn->error;
