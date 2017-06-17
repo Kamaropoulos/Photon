@@ -27,7 +27,7 @@ include_once("connection.php");
                     echo "<li class=\"dropdown\">
                           <a class=\"dropdown-toggle\" data-toggle=\"dropdown\" href=\"#\">". $_SESSION['username'] . "
                           <span class=\"caret\"></span></a>
-                              <ul class=\"dropdown-menu\">
+                              <ul class=\"dropdown-menu pull-right\">
                                 <li><a href='profile.php'>Profile</a></li>
                                 <li><a href='settings.php'>Settings</a></li>
                                 <li><a href='logout.php'>Log Out</a></li>
