@@ -164,7 +164,7 @@ include_once('header.php');
             <div class="well well-small clearfix">
                 <div class="row-fluid">
                     <div class="span2">
-                        <img src="placeholder-user.png"
+                        <img src="images/placeholder-user.png"
                              class="img-thumbnail"/>
                     </div>
                     <div class="span4">
