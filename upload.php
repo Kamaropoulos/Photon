@@ -250,7 +250,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
 
                     <div class="form-group">
                         <div class="progress" style="display:none">
-                            <div class="progress-bar progress-bar-success myprogress" id="pb1" role="progressbar" style="width:0%">0%</div>
+                            <div class="progress-bar myprogress" id="pb1" role="progressbar" style="width:0%">0%</div>
                         </div>
 
                         <div class="msg"></div>
