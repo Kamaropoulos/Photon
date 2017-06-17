@@ -41,7 +41,7 @@ if ($_POST): {
                                 <fieldset>
                                     <div class="input-group margin-bottom-sm">
                                         <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                        <input class="form-control" name="username" type="text" placeholder="Email address" required="true">
+                                        <input class="form-control" name="username" type="text" placeholder="Email address" required="true" autofocus>
                                     </div><br>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
