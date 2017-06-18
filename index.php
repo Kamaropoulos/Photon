@@ -13,7 +13,7 @@ function limit_text($text, $limit) {
 <div id="content" class="container-fluid">
 <section id="photos">
             <?php
-            $resultsPerPage = 10;
+            $resultsPerPage = 20;
             $query = mysqli_query($conn, "SELECT * FROM `images` ORDER BY `images`.`pid` DESC LIMIT 0 , $resultsPerPage");
             while ($data = mysqli_fetch_array($query)) {
                 $id = $data['pid'];

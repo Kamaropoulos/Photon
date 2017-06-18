@@ -1,7 +1,7 @@
 <?php include('connection.php'); ?>
 <?php
 if (isset($_POST['page'])):
-    $resultsPerPage = 5;
+    $resultsPerPage = 10;
     $paged = $_POST['page'];
     $sql = "SELECT * FROM `images` ORDER BY `images`.`pid` DESC";
     if ($paged > 0) {
