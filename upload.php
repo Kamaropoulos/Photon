@@ -174,7 +174,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                 $('#btn').attr('disabled', 'disabled');
                 $('.msg').text('Uploading in progress...');
                 $.ajax({
-                    url: 'upload2.php',
+                    url: 'upload.php',
                     data: formData,
                     processData: false,
                     contentType: false,
