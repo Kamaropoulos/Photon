@@ -28,19 +28,19 @@ WHERE images.pid = " . $id;
 $result = $conn->query($sql);
 if ($row = mysqli_fetch_assoc($result)) {
 
-        $sql_view = "UPDATE images
+    $sql_view = "UPDATE images
                  SET page_views = page_views + 1
-                 WHERE pid = ". $id;
-        $conn->query($sql_view);
+                 WHERE pid = " . $id;
+    $conn->query($sql_view);
 
 
     include_once("header.php");
     ?>
     <script>
-        function post(){
+        function post() {
             var comm = document.getElementById("comment").value;
 
-            if(comment){
+            if (comment) {
                 $.ajax({
                     type: 'post',
                     url: 'comment.php',
@@ -48,9 +48,9 @@ if ($row = mysqli_fetch_assoc($result)) {
                         image_id: <?=$id?>,
                         comment: comm
                     },
-                    success: function (response){
-                        document.getElementById("comments").innerHTML=response+document.getElementById("comments").innerHTML;
-                        document.getElementById("comment").value="";
+                    success: function (response) {
+                        document.getElementById("comments").innerHTML = response + document.getElementById("comments").innerHTML;
+                        document.getElementById("comment").value = "";
                     }
                 });
             }
@@ -63,6 +63,28 @@ if ($row = mysqli_fetch_assoc($result)) {
         /*margin: 0;*/
         /*padding: 0;*/
         /*}*/
+
+        details {
+            text-align: justify !important;
+        }
+
+        details:after {
+            display: inline-block !important;
+            width: 100% !important;
+        }
+
+        .cn {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+
+        .cont {
+            padding-top: 1vh;
+            padding-right: 1vh;
+            padding-bottom: 1vh;
+            padding-left: 1vh;
+        }
 
         .modal-header-danger {
             color: #fff;
@@ -96,65 +118,33 @@ if ($row = mysqli_fetch_assoc($result)) {
         .modal-body .form-horizontal .control-label {
             text-align: left;
         }
+
         .modal-body .form-horizontal .col-sm-offset-2 {
             margin-left: 15px;
         }
 
-        textarea{
-            width:100%;
-            height:100px;
+        textarea {
+            width: 100%;
+            height: 100px;
         }
     </style>
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-fluid cont">
+        <div class="row  cn">
             <div class="col-md-8">
                 <div class="img_div">
-                    <img src="images/<?php echo $row['original_image']; ?>" class="img-thumbnail">
-
-                </div>
-                <div>
-                    <h2>&nbsp;Comments</h2>
-                    <form method="post" action="" onsubmit="return post();">
-
-                        <textarea id="comment" placeholder="Write your comment here..."></textarea><br>
-                        <input type="submit" value="Post">
-
-                    </form>
-                    <div id="comments">
-                        <?php
-                            $comm_sql = "SELECT comments.*, users.username
-                                    FROM comments
-                                    JOIN users on users.uid = comments.uid
-                                    WHERE comments.pid = ". $id .";";
-                            $comments = $conn->query($comm_sql);
-                            while($row_comm = mysqli_fetch_array($comments)){
-                                $username = $row_comm['username'];
-                                $comment = $row_comm['comment'];
-                                $timestamp_raw = new DateTime($row_comm['post_time']);
-                                $timestamp = $timestamp_raw->format('F j, Y g:ia');
-
-                                $uid = $row_comm['uid']; ?>
-
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">Posted by <a href="profile.php?<?=$uid?>"><?=$username?></a> at <?=$timestamp?></div>
-                                    <div class="panel-body"><?=$comment?></p></div>
-                                </div>
-
-                                <?php
-                            }
-                        ?>
-                    </div>
+                    <img src="images/<?= $row['original_image'] ?>" class="img-thumbnail">
                 </div>
             </div>
-            <div class="col-md-3">
-                <?php
-                echo "<h2 style=\"color: #337ab7\">" . $row['title'] . "</h2>";
-                echo "<h4> by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br>";
-                echo "<p>" . $row['description'] . "</p><br>";
-                if (isset($_SESSION['userid'])) {
-                    if ($row['uid'] == $_SESSION['userid']) {
-                        //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"fa fa-trash pull-right\" aria-hidden=\"true\"></i> Delete</a>";
-                        echo "<div class=\"btn-toolbar\">
+            <br>
+            <div class="container cont ">
+                    <?php
+                    echo "<h2 style=\"display: inline; color: #337ab7\">" . $row['title'] . "</h2>";
+                    echo "<h4 style='display: inline;'> by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br><br>";
+
+                    if (isset($_SESSION['userid'])) {
+                        if ($row['uid'] == $_SESSION['userid']) {
+                            //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"fa fa-trash pull-right\" aria-hidden=\"true\"></i> Delete</a>";
+                            echo "<div class=\"btn-toolbar\">
                               
                               <a class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModalNorm\" href=\"#\">
                               <i class=\"fa fa-edit fa-lg\" ></i > Edit</a >
@@ -186,13 +176,13 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                   <div class=\"form-group\">
                                                     <label for=\"Title\">Title</label>
                                                       <input type=\"text\" class=\"form-control\"
-                                                      id=\"Title\" name='title' value='". $row['title'] ."'/>
+                                                      id=\"Title\" name='title' value='" . $row['title'] . "'/>
                                                   </div>
                                                   <div class=\"form-group\">
                                                     <label for=\"description\">Description</label>
-                                                          <textarea class=\"form-control\" rows='5' name='description' id='description'>". $row['description'] ."</textarea>
+                                                          <textarea class=\"form-control\" rows='5' name='description' id='description'>" . $row['description'] . "</textarea>
                                                   </div>
-                                                  <input type='hidden' name='pid' value='". $row['pid'] ."'>
+                                                  <input type='hidden' name='pid' value='" . $row['pid'] . "'>
                                                 
                                                 
                                                 
@@ -234,10 +224,46 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                     </div>
                 </div>";
-                        //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"icon-trash icon-large\"></i> Delete</a>";
+                        }
                     }
-                }
-                ?>
+                    echo "<br><p>" . $row['description'] . "</p><br>";
+                    ?>
+            </div>
+        </div>
+        <div class="cont">
+            <div>
+                <h2>&nbsp;Comments</h2>
+                <form method="post" action="" onsubmit="return post();">
+
+                    <textarea id="comment" placeholder="Write your comment here..."></textarea><br>
+                    <input type="submit" value="Post">
+
+                </form>
+                <div id="comments">
+                    <?php
+                    $comm_sql = "SELECT comments.*, users.username
+                                    FROM comments
+                                    JOIN users on users.uid = comments.uid
+                                    WHERE comments.pid = " . $id . ";";
+                    $comments = $conn->query($comm_sql);
+                    while ($row_comm = mysqli_fetch_array($comments)) {
+                        $username = $row_comm['username'];
+                        $comment = $row_comm['comment'];
+                        $timestamp_raw = new DateTime($row_comm['post_time']);
+                        $timestamp = $timestamp_raw->format('F j, Y g:ia');
+
+                        $uid = $row_comm['uid']; ?>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Posted by <a href="profile.php?<?= $uid ?>"><?= $username ?></a>
+                                at <?= $timestamp ?></div>
+                            <div class="panel-body"><?= $comment ?></p></div>
+                        </div>
+
+                        <?php
+                    }
+                    ?>
+                </div>
             </div>
         </div>
     </div>
