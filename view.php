@@ -49,8 +49,10 @@ if ($row = mysqli_fetch_assoc($result)) {
                         comment: comm
                     },
                     success: function (response) {
-                        document.getElementById("comments").innerHTML = response + document.getElementById("comments").innerHTML;
+                        document.getElementById("comments").innerHTML = document.getElementById("comments").innerHTML + response;
                         document.getElementById("comment").value = "";
+                        var $target = $('html,body');
+                        setTimeout($target.animate({scrollTop: $target.height()}, 1000), 500);
                     }
                 });
             }
@@ -244,7 +246,8 @@ if ($row = mysqli_fetch_assoc($result)) {
                     $comm_sql = "SELECT comments.*, users.username
                                     FROM comments
                                     JOIN users on users.uid = comments.uid
-                                    WHERE comments.pid = " . $id . ";";
+                                    WHERE comments.pid = " . $id . "
+                                    ORDER BY comments.post_time ASC;";
                     $comments = $conn->query($comm_sql);
                     while ($row_comm = mysqli_fetch_array($comments)) {
                         $username = $row_comm['username'];
