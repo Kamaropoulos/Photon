@@ -61,6 +61,7 @@ include_once('header.php');
 ?>
 
     <script>
+
         $(document).ready(function(){
             <?php if (!$isFollowing) : ?>
                 $("#unfollow-btn").hide();
@@ -153,12 +154,21 @@ include_once('header.php');
 
     /* Landscape phones and down */
     @media (max-width: 480px) {
+
+        .fade {
+            opacity: 1;
+        }
+
+        .fade:hover {
+            opacity: 0.4;
+        }
+
     }
 </style>
 
-<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+
 <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-<div class="container profile">
+<div class="container profile"><link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <div class="row">
         <div class="span12">
             <div class="well well-small clearfix">
@@ -194,34 +204,24 @@ include_once('header.php');
                     <!--Body content-->
                 </div>
             </div>
-
-            <div class="well clearfix">
-                <div id="columns">
-                    <ul class="news_list">
+            <div id="content" class="container-fluid">
+                <section id="photos">
                         <?php
                         $resultsPerPage = 10;
                         $query = mysqli_query($conn, "SELECT * FROM `images` WHERE uid = $id ORDER BY `images`.`pid` DESC LIMIT 0 , $resultsPerPage");
                         while ($data = mysqli_fetch_array($query)) {
                             $id = $data['pid'];
-                            $title = $data['title'];
-                            $content = $data['description'];
                             $image = $data['original_image'];
-                            //echo "<li><h3>$title</h3><p>$content<p></li>";
-                            echo "<div class='pin'>
-                       <a href='view.php?". $id ."'> <img src='images/" . $image . "'  /></a>
-                        <h4><a href='view.php?" . $id . "'>" . $title . "</a><i style=\"color: #337ab7\" class=\"fa fa-thumbs-up pull-right\"></i></h4>
-                        <p>" . limit_text($content, 20) . "</p>
-                      </div>";
+                            echo "<a href='view.php?". $id ."'><img src=\"images/" . $image . "\"></a>";
                         }
                         ?>
-                    </ul>
+                </section>
 
 
-                </div>
-                <ul>
+
+                <ul id="button">
                     <li class="loadbutton">
                         <button class="loadmore" data-page="2">Load More</button>
                     </li>
                 </ul>
             </div>
-        </div>

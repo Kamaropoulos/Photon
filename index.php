@@ -18,7 +18,7 @@ function limit_text($text, $limit) {
             while ($data = mysqli_fetch_array($query)) {
                 $id = $data['pid'];
                 $image = $data['original_image'];
-                echo "<a href='view.php?". $id ."'><img class='fade' src=\"images/" . $image . "\"></a>";
+                echo "<a href='view.php?". $id ."'><img src=\"images/" . $image . "\"></a>";
             }
             ?>
 </section>
