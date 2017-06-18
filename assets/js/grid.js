@@ -12,6 +12,13 @@ $(document).ready(function() {
     }
 });
 
+
+
+
+
+
+
+
 $(document).on('click', '.loadmore', function () {
     $(this).text('Loading...');
     // var ele = $(this).parent('li');
