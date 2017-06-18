@@ -25,14 +25,20 @@ ul,li {
 }
 
 
-.fade {
+.imgfd {
+    opacity: 0.4;
+    -webkit-transition: opacity .8s;
+    -moz-transition: opacity .8s;
+    transition: opacity .8s;
+}
+
+.imgfd {
     opacity: 1;
 }
 
-.fade:hover {
-    opacity: 0.4;
+.imgfd:hover {
+    opacity: 0.5;
 }
-
 
 
 #photos {

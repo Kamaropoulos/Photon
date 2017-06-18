@@ -274,7 +274,7 @@ include_once('header.php');
                         while ($data = mysqli_fetch_array($query)) {
                             $id = $data['pid'];
                             $image = $data['original_image'];
-                            echo "<a href='view.php?". $id ."'><img src=\"images/" . $image . "\"></a>";
+                            echo "<a href='view.php?". $id ."'><img class='imgfd' src=\"images/" . $image . "\"></a>";
                             $i++;
                         }
                         if ($i == 10): ?>

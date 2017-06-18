@@ -17,7 +17,7 @@ if (isset($_POST['page']) && isset($_POST['id'])):
         while ($data = mysqli_fetch_array($result)) {
             $id = $data['pid'];
             $image = $data['original_image'];
-            echo "<a href='view.php?". $id ."'><img src=\"images/" . $image . "\"></a>";
+            echo "<a href='view.php?". $id ."'><img class='imgfd' src=\"images/" . $image . "\"></a>";
 
         }
     }
