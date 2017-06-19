@@ -29,8 +29,11 @@ include_once("connection.php");
                           <span class=\"caret\"></span></a>
                               <ul class=\"dropdown-menu pull-right\">
                                 <li><a href='profile.php'>Profile</a></li>
-                                <li><a href='settings.php'>Settings</a></li>
-                                <li><a href='logout.php'>Log Out</a></li>
+                                <li><a href='settings.php'>Settings</a></li>";
+                                if ($_SESSION['userid'] == 1){
+                                    echo "<li><a href='admin.php'>Admin</a></li>";
+                                }
+                                echo "<li><a href='logout.php'>Log Out</a></li>
                               </ul>
                           </li>";
                 } else {
