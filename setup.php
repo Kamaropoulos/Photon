@@ -44,19 +44,25 @@ foreign key (uid) references users(uid),
 foreign key (pid) references images(pid)
 );";
 
+$sql_categories = "CREATE TABLE `categories` (
+cat_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+category text NOT NULL
+);";
+
 mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`users`') or die(mysqli_error($conn));
 mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`follows`') or die(mysqli_error($conn));
 mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`images`') or die(mysqli_error($conn));
 mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`comments`') or die(mysqli_error($conn));
+mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`categories`') or die(mysqli_error($conn));
 
 if ($conn->query($sql_users) === TRUE) {
-    echo "Table users created successfully<br>";
+    echo "Table Users created successfully<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
 
 if ($conn->query($sql_follows) === TRUE) {
-    echo "Table follows created successfully<br>";
+    echo "Table Follows created successfully<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
@@ -68,7 +74,13 @@ if ($conn->query($sql_images) === TRUE) {
 }
 
 if ($conn->query($sql_comments) === TRUE) {
-    echo "Table Photos created successfully<br>";
+    echo "Table Comments created successfully<br>";
+} else {
+    echo "Error creating table: " . $conn->error . "<br>";
+}
+
+if ($conn->query($sql_categories) === TRUE) {
+    echo "Table Categories created successfully<br>";
 } else {
     echo "Error creating table: " . $conn->error . "<br>";
 }
