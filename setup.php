@@ -179,6 +179,7 @@ category text NOT NULL
                         echo "<i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Error creating table Comments!<br><h4><i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Photon Installation failed!</h4>";
                         flush();
                         ob_flush();
+                        exit();
                     }
 
                     if ($conn->query($sql_categories) === TRUE) {
@@ -189,6 +190,19 @@ category text NOT NULL
                         echo "<i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Error creating table Categories!<br><h4><i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Photon Installation failed!</h4>";
                         flush();
                         ob_flush();
+                        exit();
+                    }
+                    $admin_pass = htmlentities(mysqli_real_escape_string($conn, $_POST['admin_pass']));
+                    $hashed_pass = hash('sha512', $admin_pass);
+                    if ($conn->query("INSERT INTO users (username, pass_hash) VALUES('admin','$hashed_pass')")){
+                        echo "<i style='color: green;' class=\"fa fa-check\" aria-hidden=\"true\"></i> Admin user created successfully!<br>";
+                        flush();
+                        ob_flush();
+                    } else {
+                        echo "<i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Error creating Admin user!<br><h4><i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Photon Installation failed!</h4>";
+                        flush();
+                        ob_flush();
+                        exit();
                     }
 
                     $conn->close();
@@ -257,7 +271,18 @@ category text NOT NULL
                 <div class="col-md-4">
                     <input id="host" name="host" type="text" placeholder="localhost" value='localhost'
                            class="form-control input-md">
+                    <span class="help-block">Password to be used for the admin user</span>
 
+                </div>
+            </div>
+
+            <!-- Password input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="admin_pass">Admin Password</label>
+                <div class="col-md-4">
+                    <input id="admin_pass" name="admin_pass" type="password" placeholder="admin password"
+                           class="form-control input-md">
+                    <span class="help-block">Your database's root password</span>
                 </div>
             </div>
 
