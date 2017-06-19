@@ -21,9 +21,10 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 //$sql = "SELECT * FROM images WHERE pid=" . $id;
-$sql = "SELECT images.*, users.username
+$sql = "SELECT images.*, categories.cat_id, categories.category, users.username
 FROM images
 JOIN users ON users.uid = images.uid
+JOIN categories ON images.category = categories.cat_id
 WHERE images.pid = " . $id;
 $result = $conn->query($sql);
 if ($row = mysqli_fetch_assoc($result)) {
@@ -139,14 +140,15 @@ if ($row = mysqli_fetch_assoc($result)) {
             </div>
             <br>
             <div class="container cont ">
-                    <?php
-                    echo "<h2 style=\"display: inline; color: #337ab7\">" . $row['title'] . "</h2>";
-                    echo "<h4 style='display: inline;'> by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br><br>";
+                <?php
+                echo "<h2 style=\"display: inline; color: #337ab7\">" . $row['title'] . "</h2>";
+                echo "<h4 style='display: inline;'> by <a href='profile.php?" . $row['uid'] . "'>" . $row['username'] . "</a></h4><br>";
+                echo "<h4>Category: " . $row['category'] . "</h4>";
 
-                    if (isset($_SESSION['userid'])) {
-                        if ($row['uid'] == $_SESSION['userid']) {
-                            //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"fa fa-trash pull-right\" aria-hidden=\"true\"></i> Delete</a>";
-                            echo "<div class=\"btn-toolbar\">
+                if (isset($_SESSION['userid'])) {
+                    if ($row['uid'] == $_SESSION['userid']) {
+                        //echo "<a class=\"btn btn-danger pull-right\" href=\"#\"><i class=\"fa fa-trash pull-right\" aria-hidden=\"true\"></i> Delete</a>";
+                        echo "<div class=\"btn-toolbar\">
                               
                               <a class=\"btn btn-default\" data-toggle=\"modal\" data-target=\"#myModalNorm\" href=\"#\">
                               <i class=\"fa fa-edit fa-lg\" ></i > Edit</a >
@@ -184,7 +186,22 @@ if ($row = mysqli_fetch_assoc($result)) {
                                                     <label for=\"description\">Description</label>
                                                           <textarea class=\"form-control\" rows='5' name='description' id='description'>" . $row['description'] . "</textarea>
                                                   </div>
-                                                  <input type='hidden' name='pid' value='" . $row['pid'] . "'>
+                                                  <div class=\"form-group\">
+                                                    <label for=\"category\">Select category:</label>
+                                                        <select name='category' class=\"form-control\" id=\"category\">";
+                        $cat_select = "SELECT * FROM categories;";
+                        $categories = $conn->query($cat_select);
+                        while ($row_cat = mysqli_fetch_array($categories)) {
+                            $i++;
+                            $cat_id = $row_cat['cat_id'];
+                            $category = $row_cat['category'];
+                            if ($cat_id == $row['cat_id']){
+                                echo "<option value=\"$cat_id\" selected>$category</option>";
+                            } else echo "<option value=\"$cat_id\">$category</option>";
+                        }
+                        echo "</select>
+                    </div>
+                    <input type='hidden' name='pid' value='" . $row['pid'] . "'>
                                                 
                                                 
                                                 
@@ -226,10 +243,10 @@ if ($row = mysqli_fetch_assoc($result)) {
 
                     </div>
                 </div>";
-                        }
                     }
-                    echo "<br><p>" . $row['description'] . "</p><br>";
-                    ?>
+                }
+                echo "<br><p>" . $row['description'] . "</p><br>";
+                ?>
             </div>
         </div>
         <div class="cont">
