@@ -1,6 +1,7 @@
 <?php
 
-function compress($source, $destination, $quality) {
+function compress($source, $destination, $quality)
+{
 
     $info = getimagesize($source);
 
@@ -38,17 +39,18 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
             if ($size < 209888800) { // check if the file size is more than 2 mb
                 while (true) {
                     $file_name = uniqid('img_', true);
-                    $file_name = str_replace('.', '',$file_name);
+                    $file_name = str_replace('.', '', $file_name);
                     if (!file_exists("images/" . $file_name)) break;
                 }
                 $tmp = $_FILES['myfile']['tmp_name'];
                 //if (move_uploaded_file($tmp, $path . $file_name.'.'.$ext)) { //check if it the file move successfully.
-                if (compress($tmp, $path . $file_name.'.'.$ext, 90)){
+                if (compress($tmp, $path . $file_name . '.' . $ext, 90)) {
                     //echo "File uploaded successfully!!";
                     $title = mysqli_real_escape_string($conn, $_POST['title']);
                     $description = mysqli_real_escape_string($conn, $_POST['description']);
+                    $category = (int)mysqli_real_escape_string($conn, $_POST['category']);
 
-                    $sql = "INSERT INTO images (`uid`, `title`, `description`, `original_image`) VALUES ('" . $_SESSION['userid'] . "', '" . $title ."', '" . $description . "', '$file_name.$ext');";
+                    $sql = "INSERT INTO images (`uid`, `title`, `description`, `category`, `original_image`) VALUES ('" . $_SESSION['userid'] . "', '" . $title . "', '" . $description . "', '" . $category . "', '$file_name.$ext');";
                     if ($conn->query($sql) === TRUE) {
                         $last_id = $conn->insert_id;
                         echo $last_id;
@@ -97,6 +99,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
             position: relative;
             overflow: hidden;
         }
+
         .btn-file input[type=file] {
             position: absolute;
             top: 0;
@@ -113,28 +116,28 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
             display: block;
         }
 
-        #img-upload{
+        #img-upload {
             width: 100%;
         }
     </style>
     <script>
-        $(document).ready( function() {
+        $(document).ready(function () {
 
-            $(document).on('change', '.btn-file :file', function() {
+            $(document).on('change', '.btn-file :file', function () {
 
                 var input = $(this),
                     label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
                 input.trigger('fileselect', [label]);
             });
 
-            $('.btn-file :file').on('fileselect', function(event, label) {
+            $('.btn-file :file').on('fileselect', function (event, label) {
                 var input = $(this).parents('.input-group').find(':text'),
                     log = label;
 
-                if( input.length ) {
+                if (input.length) {
                     input.val(log);
                 } else {
-                    if( log ) alert(log);
+                    if (log) alert(log);
                 }
 
             });
@@ -150,7 +153,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                 }
             }
 
-            $("#myfile").change(function(){
+            $("#myfile").change(function () {
                 readURL(this);
             });
         });
@@ -163,6 +166,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                 var title = $('#title').val();
                 var description = $('#description').val();
                 var myfile = $('#myfile').val();
+                var category = $('#category').val();
                 if (title == '' || description == '' || myfile == '') {
                     alert('Please enter file name and select file');
                     return;
@@ -171,6 +175,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                 formData.append('myfile', $('#myfile')[0].files[0]);
                 formData.append('title', title);
                 formData.append('description', description);
+                formData.append('category', category);
                 $('#btn').attr('disabled', 'disabled');
                 $('.msg').text('Uploading in progress...');
                 $.ajax({
@@ -197,7 +202,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                         $('#btn').removeAttr('disabled');
                         if (data > 0) window.location.href = "view.php?" + data;
                         else {
-                            switch(data){
+                            switch (data) {
                                 case "-1":
                                     $('.msg').text("An error occured while saving your post.");
                                     break;
@@ -226,14 +231,33 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-5 col-md-offset-3">
-                <form id="myform" enctype="multipart/form-data" name='imageform' role="form" id="imageform" method="post">
+                <form id="myform" enctype="multipart/form-data" name='imageform' role="form" id="imageform"
+                      method="post">
                     <div class="form-group">
                         <label for="title">Title:</label>
                         <input type="text" class="form-control" id="title" name="title" required="true">
                     </div>
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <textarea class="form-control" rows="5" id="description" name="description" required="true"></textarea>
+                        <textarea class="form-control" rows="5" id="description" name="description"
+                                  required="true"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Select category:</label>
+                        <select class="form-control" id="category">
+                            <?php
+                            $cat_select = "SELECT * FROM categories;";
+                            $categories = $conn->query($cat_select);
+                            $i = 0;
+                            while ($row_cat = mysqli_fetch_array($categories)) {
+                                $i++;
+                                $cat_id = $row_cat['cat_id'];
+                                $category = $row_cat['category'];
+                                echo "<option value=\"$cat_id\">$category</option>";
+                            }
+                            ?>
+
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Upload Image</label>
@@ -261,4 +285,4 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
             </div>
         </div>
     </div>
-<?php endif ?>
+    <?php endif ?>
