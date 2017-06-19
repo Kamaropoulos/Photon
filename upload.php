@@ -26,7 +26,7 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
 
     $path = "images/"; //set your folder path
     //set the valid file extensions
-    $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "GIF", "JPG", "PNG"); //add the formats you want to upload
+    $valid_formats = array("jpg", "jpeg", "JPG"); //add the formats you want to upload
 
     $name = $_FILES['myfile']['name']; //get the name of the file
 
@@ -53,23 +53,23 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                         $last_id = $conn->insert_id;
                         echo $last_id;
                     } else {
-                        echo -1; //MySQL Error
+                        echo "-1"; //MySQL Error
                     }
                 } else {
                     //echo "failed";
-                    echo -2; //File naming/moving failed
+                    echo "-2"; //File naming/moving failed
                 }
             } else {
                 //echo "File size max 2 MB";
-                echo -3; //File too large
+                echo "-3"; //File too large
             }
         } else {
             //echo "Invalid file format..";
-            echo -4; //Invalid file format
+            echo "-4"; //Invalid file format
         }
     } else {
         //echo "Please select a file..!";
-        echo -5; //No file selected
+        echo "-5"; //No file selected
     }
     mysqli_close($conn);
 
@@ -198,23 +198,23 @@ if (isset($_POST) and isset($_POST['title']) and isset($_POST['description']) an
                         if (data > 0) window.location.href = "view.php?" + data;
                         else {
                             switch(data){
-                                case -1:
+                                case "-1":
                                     $('.msg').text("An error occured while saving your post.");
                                     break;
-                                case -2:
+                                case "-2":
                                     $('.msg').text("An error occured while saving your post.");
                                     break;
-                                case -3:
+                                case "-3":
                                     $('.msg').text("The image is too large.");
                                     break;
-                                case -4:
+                                case "-4":
                                     $('.msg').text("Invalid file format.");
                                     break;
-                                case -5:
+                                case "-5":
                                     $('.msg').text("No file selected.");
                                     break;
                                 default:
-                                    $('.msg').text("Undefined error.");
+                                    $('.msg').text("An unidentified error has occurred.");
                             }
                         }
                     }
