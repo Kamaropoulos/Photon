@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "photon";
-$password = "12345678";
-$dbname = "photon";
+$servername = "--host--";
+$username = "--username--";
+$password = "--pass--";
+$dbname = "--db--";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

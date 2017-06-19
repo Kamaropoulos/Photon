@@ -1,5 +1,8 @@
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 
 
 <?php
@@ -10,13 +13,50 @@ if ($_POST) : {
     $username = $_POST['username'];
     $user_pass = $_POST['user_pass'];
     $host = $_POST['host'];
+    echo "$user_pass <br>";
+    echo "$root_pass";
 
-    mysql_connect($host, 'root', $root_pass);
-    mysql_query("CREATE USER '$username'@'$host' IDENTIFIED BY '$user_pass';");
-    mysql_query("GRANT ALL ON $username.* TO '$username'@'$host'");
-    mysql_query("CREATE DATABASE $db_name");
-    mysql_query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
-    mysql_close();
+    $conn = new mysqli($host, 'root', $root_pass);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    echo "Connected successfully<br>";
+
+    if (!$conn->query("CREATE USER '$username'@'$host' IDENTIFIED BY '$user_pass';")){
+        die("User creation error: " . $conn->connect_error);
+    }
+    echo "User created successfully<br>";
+
+    if (!$conn->query("GRANT ALL ON $db_name.* TO '$username'@'$host';")){
+        die("Error: " . $conn->connect_error);
+    }
+    echo "Privileges granted successfully<br>";
+
+    if (!$conn->query("CREATE DATABASE $db_name;")){
+        die("DB creation error: " . $conn->connect_error);
+    }
+    echo "Database created successfully<br>";
+
+    $conn->query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+    $conn->close();
+
+    echo "Updating connection configuration...<br>";
+
+    $db_name_placeholder = "--db--";
+    $username_placeholder = "--username--";
+    $user_pass_placeholder = "--pass--";
+    $host_placeholder = "--host--";
+
+    $config = file_get_contents('connection.sample.php');
+
+    $config = str_replace($db_name_placeholder, $db_name, $config);
+    $config = str_replace($username_placeholder, $username, $config);
+    $config = str_replace($user_pass_placeholder, $user_pass, $config);
+    $config = str_replace($host_placeholder, $host, $config);
+
+    file_put_contents('connection.php', $config) or die("Error updating configuration file.");
+
+    echo "Configuration updated succesfully<br>";
 
     include("connection.php");
 
@@ -61,11 +101,11 @@ category text NOT NULL
 );";
 
 
-    mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`users`') or die(mysqli_error($conn));
-    mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`follows`') or die(mysqli_error($conn));
-    mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`images`') or die(mysqli_error($conn));
-    mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`comments`') or die(mysqli_error($conn));
-    mysqli_query($conn, 'DROP TABLE IF EXISTS `photon`.`categories`') or die(mysqli_error($conn));
+    mysqli_query($conn, "DROP TABLE IF EXISTS `$db_name`.`users`") or die(mysqli_error($conn));
+    mysqli_query($conn, "DROP TABLE IF EXISTS `$db_name`.`follows`") or die(mysqli_error($conn));
+    mysqli_query($conn, "DROP TABLE IF EXISTS `$db_name`.`images`") or die(mysqli_error($conn));
+    mysqli_query($conn, "DROP TABLE IF EXISTS `$db_name`.`comments`") or die(mysqli_error($conn));
+    mysqli_query($conn, "DROP TABLE IF EXISTS `$db_name`.`categories`") or die(mysqli_error($conn));
 
     if ($conn->query($sql_users) === TRUE) {
         echo "Table Users created successfully<br>";
@@ -139,10 +179,10 @@ category text NOT NULL
 
             <!-- Password input-->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="root_pass">root Password</label>
+                <label class="col-md-4 control-label" for="root_pass">root password</label>
                 <div class="col-md-4">
-                    <input id="root_pass" name="root_pass" type="password" placeholder="root Password"
-                           class="form-control input-md" required="">
+                    <input id="root_pass" name="root_pass" type="password" placeholder="root password"
+                           class="form-control input-md" >
                     <span class="help-block">Your database's root password</span>
                 </div>
             </div>
@@ -151,7 +191,7 @@ category text NOT NULL
             <div class="form-group">
                 <label class="col-md-4 control-label" for="host">Database Host</label>
                 <div class="col-md-4">
-                    <input id="host" name="host" type="text" placeholder="localhost" class="form-control input-md">
+                    <input id="host" name="host" type="text" placeholder="localhost" value='localhost' class="form-control input-md">
 
                 </div>
             </div>
