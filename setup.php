@@ -86,7 +86,7 @@ if ($_POST) : {
                     $config = str_replace($user_pass_placeholder, $user_pass, $config);
                     $config = str_replace($host_placeholder, $host, $config);
 
-                    file_put_contents('connection.php', $config) or die("Error updating configuration file.");
+                    file_put_contents('connection.php', $config) or die("<i style='color: red;' class=\"fa fa-times\" aria-hidden=\"true\"></i> Error updating configuration file.");
 
                     echo "<i style='color: green;' class=\"fa fa-check\" aria-hidden=\"true\"></i> Configuration file updated succesfully!<br>";
                     flush();
