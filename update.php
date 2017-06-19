@@ -5,7 +5,7 @@ if ($_POST){
     $id = (int)mysqli_real_escape_string($conn, $_POST['pid']);
     $title = htmlentities(mysqli_real_escape_string($conn, $_POST['title']));
     $description = htmlentities(mysqli_real_escape_string($conn, $_POST['description']));
-
+    $category = (int)mysqli_real_escape_string($conn, $_POST['category']);
     $sql = "SELECT images.*, users.username
             FROM images
             JOIN users ON users.uid = images.uid
@@ -15,7 +15,7 @@ if ($_POST){
         if (isset($_SESSION['userid'])) {
             if ($row['uid'] == $_SESSION['userid']) {
 
-                $sql = "UPDATE images SET title='" . $title . "', description='" . $description . "' WHERE pid=" . $id;
+                $sql = "UPDATE images SET title='" . $title . "', description='" . $description . "', category='". $category ."' WHERE pid=" . $id;
 
                 if ($conn->query($sql) === TRUE) {
                     header('Location:view.php?' . $id);
